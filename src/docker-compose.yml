@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.8' # borrar esto
 
 services:
   # PostgreSQL Database
@@ -49,6 +49,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+      
 
   # Next.js Frontend
   web:
