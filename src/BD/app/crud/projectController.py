@@ -27,6 +27,9 @@ class ProjectCRUD:
         if search:
             query = query.filter(Project.name.ilike(f"%{search}%"))
         
+        # Order by creation date descending (most recent first)
+        query = query.order_by(Project.created_at.desc())
+        
         return query.offset(skip).limit(limit).all()
 
     def get_by_id(self, db: Session, *, project_id: int) -> Optional[Project]:

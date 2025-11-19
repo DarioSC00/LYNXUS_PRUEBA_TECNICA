@@ -64,14 +64,11 @@ api.interceptors.response.use((response) => {
     });
 
     // Show toast for critical errors (only if not handled by components)
-    // Note: 401 errors are handled by individual components, not globally
-    if (error?.response?.status === 500) {
-      toast.error("Server error. Please try again later.");
-    } else if (error?.response?.status === 503) {
+    // Note: 401 errors and other specific errors are handled by individual components
+    if (error?.response?.status === 503) {
       toast.error("Service unavailable. Please try again later.");
-    } else if (error?.code === "ECONNABORTED" || error?.code === "ERR_NETWORK") {
-      toast.error("Network error. Please check your connection.");
     }
+    // Removed network error toast - let components handle their own error messages
   } catch (err) {
     console.error('[axios] response error logging failed', err);
   }

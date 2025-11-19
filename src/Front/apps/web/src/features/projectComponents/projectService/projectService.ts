@@ -102,7 +102,7 @@ export async function listProjects(params: { q?: string; page?: number; page_siz
 
 export async function createProject(payload: CreateProjectInput) {
   // usa la instancia api ya importada en este archivo
-  const res = await api.post("/projects", payload);
+  const res = await api.post("/projects/", payload);
   return res.data;
 }
 

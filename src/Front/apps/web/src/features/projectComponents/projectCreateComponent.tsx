@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogTitle,
@@ -34,7 +33,6 @@ type CreateProjectInput = {
 };
 
 export default function ProjectCreateComponent({ defaultOpen = false, onCreated }: Props) {
-  const router = useRouter();
   const [open, setOpen] = useState<boolean>(Boolean(defaultOpen));
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formData, setFormData] = useState<CreateProjectInput>({
@@ -89,11 +87,12 @@ export default function ProjectCreateComponent({ defaultOpen = false, onCreated 
       }
 
       toast.success("✅ Project created successfully!");
-      setOpen(false);
+      
       setFormData({ name: "", description: "" });
       setSelectedMembers([]);
+      setOpen(false);
+      
       if (typeof onCreated === "function") onCreated();
-      router.push("/project");
     } catch (err: unknown) {
       console.error("createProject error:", err);
       toast.error("❌ Could not create project. Please try again.");

@@ -15,6 +15,10 @@ import {
   Divider,
   CircularProgress,
   IconButton,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonIcon from "@mui/icons-material/Person";
@@ -22,10 +26,11 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
+import SaveIcon from "@mui/icons-material/Save";
 import ConfirmDialog from "../universalComponents/confirmUniversalComponent/ConfirmDialog";
 import * as taskService from "./taskService/taskService";
 import * as commentService from "../commentComponents/commentService/commentService";
-import type { TaskDetail, CommentItem } from "./taskService/taskService";
+import type { TaskDetail, CommentItem, StatusType, PriorityType } from "./taskService/taskService";
 import { toast } from "react-toastify";
 
 // Aceptar onUpdate opcional para que el consumidor pueda pasarlo
@@ -43,6 +48,11 @@ const TaskDetailComponent: React.FC<Props> = ({ taskId, open, onClose, onUpdate 
   const [commentsLoading, setCommentsLoading] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [creating, setCreating] = useState(false);
+  
+  // Edit states
+  const [editedStatus, setEditedStatus] = useState<StatusType>("todo");
+  const [editedPriority, setEditedPriority] = useState<PriorityType>("low");
+  const [saving, setSaving] = useState(false);
 
   // Confirm dialog states
   const [confirmDeleteComment, setConfirmDeleteComment] = useState(false);
@@ -57,6 +67,10 @@ const TaskDetailComponent: React.FC<Props> = ({ taskId, open, onClose, onUpdate 
       try {
         const t = await taskService.getTask(taskId);
         setTask(t ?? null);
+        if (t) {
+          setEditedStatus(t.status);
+          setEditedPriority(t.priority);
+        }
       } catch (err) {
         console.error("Error loading task:", err);
         toast.error("⚠️ Could not load task details. Please try again.");
@@ -68,6 +82,27 @@ const TaskDetailComponent: React.FC<Props> = ({ taskId, open, onClose, onUpdate 
     loadComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, taskId]);
+
+  const handleSaveChanges = async () => {
+    if (!task) return;
+    setSaving(true);
+    try {
+      await taskService.updateTask(task.id, {
+        status: editedStatus,
+        priority: editedPriority,
+      });
+      toast.success("✅ Task updated successfully!");
+      // Reload task details
+      const updated = await taskService.getTask(taskId);
+      setTask(updated ?? null);
+      onUpdate?.();
+    } catch (err) {
+      console.error("Error updating task:", err);
+      toast.error("❌ Could not update task. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const loadComments = async () => {
     setCommentsLoading(true);
@@ -187,16 +222,56 @@ const TaskDetailComponent: React.FC<Props> = ({ taskId, open, onClose, onUpdate 
           <Box sx={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', minHeight: '650px', maxHeight: '75vh' }}>
             {/* LEFT COLUMN: Task Details */}
             <Box sx={{ p: 4, pr: 3, borderRight: '1px solid #e5e7eb', overflowY: 'auto' }}>
-              {/* Status and Priority */}
-              <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-                <Chip 
-                  label={task.status === "todo" ? "To Do" : task.status === "doing" ? "In Progress" : "Completed"}
-                  sx={{ ...getStatusColor(task.status), fontWeight: 600 }}
-                />
-                <Chip 
-                  label={`${task.priority === "low" ? "Low" : task.priority === "medium" ? "Medium" : "High"} Priority`}
-                  sx={{ ...getPriorityColor(task.priority), fontWeight: 600 }}
-                />
+              {/* Status and Priority Editors */}
+              <Box sx={{ display: 'flex', gap: 2, mb: 3, alignItems: 'center' }}>
+                <FormControl size="small" sx={{ minWidth: 180 }}>
+                  <InputLabel>Status</InputLabel>
+                  <Select
+                    value={editedStatus}
+                    label="Status"
+                    onChange={(e) => setEditedStatus(e.target.value as StatusType)}
+                    sx={{ bgcolor: 'white', borderRadius: 2 }}
+                  >
+                    <MenuItem value="todo">📋 To Do</MenuItem>
+                    <MenuItem value="doing">⚙️ In Progress</MenuItem>
+                    <MenuItem value="done">✅ Completed</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <FormControl size="small" sx={{ minWidth: 180 }}>
+                  <InputLabel>Priority</InputLabel>
+                  <Select
+                    value={editedPriority}
+                    label="Priority"
+                    onChange={(e) => setEditedPriority(e.target.value as PriorityType)}
+                    sx={{ bgcolor: 'white', borderRadius: 2 }}
+                  >
+                    <MenuItem value="low">🟢 Low</MenuItem>
+                    <MenuItem value="medium">🟡 Medium</MenuItem>
+                    <MenuItem value="high">🔴 High</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <Button
+                  variant="contained"
+                  onClick={handleSaveChanges}
+                  disabled={saving || (editedStatus === task.status && editedPriority === task.priority)}
+                  startIcon={saving ? <CircularProgress size={16} /> : <SaveIcon />}
+                  sx={{
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #5568d3 0%, #63408b 100%)',
+                    },
+                    '&:disabled': {
+                      bgcolor: '#e5e7eb',
+                      color: '#9ca3af',
+                    },
+                  }}
+                >
+                  {saving ? 'Saving...' : 'Save Changes'}
+                </Button>
               </Box>
 
               {/* Description */}

@@ -8,6 +8,7 @@ import TaskCreate from "../taskComponents/taskCreateComponent";
 import ProjectCreateComponent from "./projectCreateComponent";
 import AddMembersModal from "./addMembersModal";
 import PaginationUniversal from "../universalComponents/paginationUniversalComponents/paginationUniversal";
+import { toast } from "react-toastify";
 import {
   Box,
   Container,
@@ -37,6 +38,24 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import FolderIcon from "@mui/icons-material/Folder";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 // Tipos concretos para evitar `any`
 type Task = {
@@ -48,6 +67,120 @@ type Task = {
   due_date?: string | null;
   assignee_id?: number | null;
 };
+
+// Componente sortable para cada tarea
+function SortableTaskItem({
+  task,
+  onClick,
+  getStatusColor,
+  getPriorityColor,
+}: {
+  task: Task;
+  onClick: () => void;
+  getStatusColor: (status: string) => any;
+  getPriorityColor: (priority: string) => any;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: task.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    cursor: isDragging ? "grabbing" : "grab",
+  };
+
+  return (
+    <ListItem
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      sx={{
+        bgcolor: "white",
+        mb: 1,
+        borderRadius: 1,
+        border: "1px solid",
+        borderColor: "divider",
+        cursor: "grab !important",
+        "&:active": {
+          cursor: "grabbing !important",
+        },
+        "&:hover": {
+          bgcolor: "action.hover",
+        },
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "12px 16px",
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+
+      {/* Drag Indicator Icon */}
+      <Box sx={{ display: "flex", alignItems: "center", mr: 2, pointerEvents: "none" }}>
+        <DragIndicatorIcon sx={{ color: "text.secondary", fontSize: 20 }} />
+      </Box>
+
+      {/* Task Info - Clickable title only; other parts ignore pointer events so clicks fall through to ListItem (drag) */}
+      <Box sx={{ flex: 1, pointerEvents: "none" }}>
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            fontWeight: 500,
+            cursor: "pointer",
+            pointerEvents: "auto",
+            "&:hover": {
+              color: "primary.main",
+              textDecoration: "underline",
+            },
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+        >
+          {task.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ pointerEvents: "none" }}>
+          Due: {task.due_date ? new Date(task.due_date).toLocaleDateString() : "-"}
+        </Typography>
+      </Box>
+
+      {/* Status & Priority Chips */}
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1, pointerEvents: "none" }}>
+        <Chip
+          label={
+            task.status === "todo"
+              ? "To Do"
+              : task.status === "doing"
+              ? "In Progress"
+              : "Completed"
+          }
+          color={getStatusColor(task.status)}
+          size="small"
+        />
+        <Chip
+          label={
+            task.priority === "low"
+              ? "Low"
+              : task.priority === "medium"
+              ? "Medium"
+              : "High"
+          }
+          color={getPriorityColor(task.priority)}
+          size="small"
+        />
+      </Box>
+    </ListItem>
+  );
+}
 
 type ProjectItem = {
   id: number;
@@ -74,6 +207,39 @@ export default function ProjectList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const pageSize = 5;
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Handler para drag end de tareas
+  const handleTaskDragEnd = (projectId: number) => (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    console.log("🎯 Drag end:", { active: active.id, over: over?.id, projectId });
+
+    if (over && active.id !== over.id) {
+      setTasksByProject((prev) => {
+        const tasks = prev[projectId] || [];
+        console.log("📋 Current tasks:", tasks);
+        const oldIndex = tasks.findIndex((t) => t.id === active.id);
+        const newIndex = tasks.findIndex((t) => t.id === over.id);
+        console.log("🔄 Moving from", oldIndex, "to", newIndex);
+        const reordered = arrayMove(tasks, oldIndex, newIndex);
+        console.log("✅ Reordered tasks:", reordered);
+        return { ...prev, [projectId]: reordered };
+      });
+      toast.success("✅ Task reordered");
+    }
+  };
 
   // states for project modals / create task
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
@@ -182,6 +348,31 @@ export default function ProjectList() {
     }
   };
 
+  // Check if project is completed (all tasks are done)
+  const isProjectCompleted = (projectId: number): boolean => {
+    const tasks = tasksByProject[projectId] || [];
+    if (tasks.length === 0) return false;
+    return tasks.every((task) => task.status === "done");
+  };
+
+  // Get project completion chip
+  const getProjectStatusChip = (project: ProjectItem) => {
+    const tasks = tasksByProject[project.id] || [];
+    const isCompleted = tasks.length > 0 && tasks.every((task) => task.status === "done");
+    const inProgress = tasks.some((task) => task.status === "doing");
+    
+    if (project.archived) {
+      return <Chip label="Archived" color="default" size="small" />;
+    }
+    if (isCompleted) {
+      return <Chip label="✅ Completed" color="success" size="small" sx={{ fontWeight: 600 }} />;
+    }
+    if (inProgress) {
+      return <Chip label="⌛ In Progress" color="info" size="small" sx={{ fontWeight: 600 }} />;
+    }
+    return <Chip label="📋 Active" color="primary" size="small" sx={{ fontWeight: 600 }} />;
+  };
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Breadcrumbs sx={{ mb: 3 }}>
@@ -202,9 +393,12 @@ export default function ProjectList() {
         </Box>
         <ProjectCreateComponent
           onCreated={() => {
-            setSearchQuery("");
-            setCurrentPage(1);
-            window.location.reload();
+            // Wait for toast to be visible before reloading
+            setTimeout(() => {
+              setSearchQuery("");
+              setCurrentPage(1);
+              window.location.reload();
+            }, 1500);
           }}
         />
       </Box>
@@ -294,11 +488,7 @@ export default function ProjectList() {
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Chip
-                            label={project.archived ? "Archived" : "Active"}
-                            color={project.archived ? "default" : "success"}
-                            size="small"
-                          />
+                          {getProjectStatusChip(project)}
                         </TableCell>
                         <TableCell>
                           <Typography variant="body2">
@@ -365,64 +555,28 @@ export default function ProjectList() {
                                   No tasks in this project
                                 </Typography>
                               ) : (
-                                <List dense>
-                                  {projectTasks.map((task: Task) => (
-                                    <ListItem
-                                      key={task.id}
-                                      sx={{
-                                        bgcolor: "white",
-                                        mb: 1,
-                                        borderRadius: 1,
-                                        border: "1px solid",
-                                        borderColor: "divider",
-                                        cursor: "pointer",
-                                        "&:hover": {
-                                          bgcolor: "action.hover",
-                                        },
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                      }}
-                                      onClick={() => openTask(task.id)}
-                                    >
-                                      <Box sx={{ flex: 1 }}>
-                                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                          {task.title}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                          Due:{" "}
-                                          {task.due_date
-                                            ? new Date(task.due_date).toLocaleDateString()
-                                            : "-"}
-                                        </Typography>
-                                      </Box>
-                                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                        <Chip
-                                          label={
-                                            task.status === "todo"
-                                              ? "To Do"
-                                              : task.status === "doing"
-                                              ? "In Progress"
-                                              : "Completed"
-                                          }
-                                          color={getStatusColor(task.status)}
-                                          size="small"
+                                <DndContext
+                                  sensors={sensors}
+                                  collisionDetection={closestCenter}
+                                  onDragEnd={handleTaskDragEnd(project.id)}
+                                >
+                                  <SortableContext
+                                    items={projectTasks.map((t) => t.id)}
+                                    strategy={verticalListSortingStrategy}
+                                  >
+                                    <List dense>
+                                      {projectTasks.map((task: Task) => (
+                                        <SortableTaskItem
+                                          key={task.id}
+                                          task={task}
+                                          onClick={() => openTask(task.id)}
+                                          getStatusColor={getStatusColor}
+                                          getPriorityColor={getPriorityColor}
                                         />
-                                        <Chip
-                                          label={
-                                            task.priority === "low"
-                                              ? "Low"
-                                              : task.priority === "medium"
-                                              ? "Medium"
-                                              : "High"
-                                          }
-                                          color={getPriorityColor(task.priority)}
-                                          size="small"
-                                        />
-                                      </Box>
-                                    </ListItem>
-                                  ))}
-                                </List>
+                                      ))}
+                                    </List>
+                                  </SortableContext>
+                                </DndContext>
                               )}
                             </Box>
                           </Collapse>
