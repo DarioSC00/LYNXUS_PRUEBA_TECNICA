@@ -95,6 +95,11 @@ const TaskDetailComponent: React.FC<Props> = ({ taskId, open, onClose, onUpdate 
       // Reload task details
       const updated = await taskService.getTask(taskId);
       setTask(updated ?? null);
+      if (updated) {
+        setEditedStatus(updated.status);
+        setEditedPriority(updated.priority);
+      }
+      // Notify parent to refresh tasks and project state
       onUpdate?.();
     } catch (err) {
       console.error("Error updating task:", err);

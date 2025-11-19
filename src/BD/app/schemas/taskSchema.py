@@ -57,6 +57,8 @@ class TaskOut(BaseModel):
     status: str
     priority: str
     due_date: Optional[datetime] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     assignee: Optional[UserOut] = None
     comments: List[CommentOut] = []
 

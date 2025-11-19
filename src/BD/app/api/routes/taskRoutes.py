@@ -119,7 +119,7 @@ def update_task(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Task not found"
         )
-    project = project_crud.get_by_id(db=db, project_id=task.project_id, owner_id=current_user.id)
+    project = project_crud.get_by_id(db=db, project_id=task.project_id)
     if not project:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -141,7 +141,7 @@ def delete_task(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Task not found"
         )
-    project = project_crud.get_by_id(db=db, project_id=task.project_id, owner_id=current_user.id)
+    project = project_crud.get_by_id(db=db, project_id=task.project_id)
     if not project:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

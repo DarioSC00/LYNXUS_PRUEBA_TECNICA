@@ -66,6 +66,7 @@ type Task = {
   priority: "low" | "medium" | "high" | string;
   due_date?: string | null;
   assignee_id?: number | null;
+  created_at?: string;
 };
 
 // Componente sortable para cada tarea
@@ -201,6 +202,7 @@ export default function ProjectList() {
   const [tasksLoading, setTasksLoading] = useState<Record<number, boolean>>({});
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
   const [taskModalOpen, setTaskModalOpen] = useState(false);
+  const [taskModalProjectId, setTaskModalProjectId] = useState<number | null>(null);
 
   // Search and pagination state
   const [searchQuery, setSearchQuery] = useState("");
@@ -307,9 +309,10 @@ export default function ProjectList() {
     }
   };
 
-  const openTask = (taskId: number) => {
+  const openTask = (taskId: number, projectId?: number) => {
     setSelectedTaskId(taskId);
     setTaskModalOpen(true);
+    if (projectId) setTaskModalProjectId(projectId);
   };
 
   type TaskCreateProps = {
@@ -569,7 +572,7 @@ export default function ProjectList() {
                                         <SortableTaskItem
                                           key={task.id}
                                           task={task}
-                                          onClick={() => openTask(task.id)}
+                                          onClick={() => openTask(task.id, project.id)}
                                           getStatusColor={getStatusColor}
                                           getPriorityColor={getPriorityColor}
                                         />
@@ -644,6 +647,17 @@ export default function ProjectList() {
           onClose={() => {
             setTaskModalOpen(false);
             setSelectedTaskId(null);
+            setTaskModalProjectId(null);
+          }}
+          onUpdate={() => {
+            // Refresh tasks for the project that opened the modal
+            if (taskModalProjectId) {
+              reloadTasksFor(taskModalProjectId);
+            }
+            // Close the modal and reset selection
+            setTaskModalOpen(false);
+            setSelectedTaskId(null);
+            setTaskModalProjectId(null);
           }}
         />
       )}

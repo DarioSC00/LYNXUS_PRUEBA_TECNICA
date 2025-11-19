@@ -12,6 +12,7 @@ export type TaskItem = {
   due_date?: string | null;
   assignee?: UserItem | null;
   comments?: CommentItem[];
+  created_at?: string;
 };
 export type ProjectDetail = {
   id: number;

@@ -10,13 +10,15 @@ export type UserItem = {
 };
 
 export type UserDetail = UserItem & {
-  projects?: Array<{ id: number; name: string; description?: string }>;
+  projects?: Array<{ id: number; name: string; description?: string; role?: string }>;
   tasks?: Array<{
     id: number;
     title: string;
+    description?: string;
     status: 'todo' | 'doing' | 'done';
     priority: 'low' | 'medium' | 'high';
     due_date?: string | null;
+    project_id?: number;
   }>;
 };
 
