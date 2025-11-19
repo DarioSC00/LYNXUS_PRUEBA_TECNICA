@@ -78,8 +78,8 @@ function SortableTaskItem({
 }: {
   task: Task;
   onClick: () => void;
-  getStatusColor: (status: string) => any;
-  getPriorityColor: (priority: string) => any;
+  getStatusColor: (status: string) => "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
+  getPriorityColor: (priority: string) => "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
 }) {
   const {
     attributes,
@@ -273,8 +273,37 @@ export default function ProjectList() {
           page_size: pageSize
         });
 
-        setProjects(res.items || []);
+        const projectItems = res.items || [];
+        setProjects(projectItems);
         setTotalItems(res.total || 0);
+
+        // Load tasks for all visible projects to calculate status correctly
+        const tasksLoadPromises = projectItems.map(async (project) => {
+          try {
+            const projectDetail = await projectService.getProject(project.id);
+            return {
+              projectId: project.id,
+              tasks: (projectDetail?.tasks ?? []) as Task[]
+            };
+          } catch (err) {
+            console.error(`Error loading tasks for project ${project.id}:`, err);
+            return {
+              projectId: project.id,
+              tasks: []
+            };
+          }
+        });
+
+        const tasksResults = await Promise.all(tasksLoadPromises);
+        
+        // Update tasksByProject state with loaded tasks
+        setTasksByProject((prev) => {
+          const updated = { ...prev };
+          tasksResults.forEach(({ projectId, tasks }) => {
+            updated[projectId] = tasks;
+          });
+          return updated;
+        });
       } catch (err) {
         console.error("Error loading projects:", err);
         setProjects([]);
@@ -349,13 +378,6 @@ export default function ProjectList() {
       default:
         return "default";
     }
-  };
-
-  // Check if project is completed (all tasks are done)
-  const isProjectCompleted = (projectId: number): boolean => {
-    const tasks = tasksByProject[projectId] || [];
-    if (tasks.length === 0) return false;
-    return tasks.every((task) => task.status === "done");
   };
 
   // Get project completion chip
