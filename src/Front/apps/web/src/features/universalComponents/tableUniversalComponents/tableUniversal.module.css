@@ -1,0 +1,89 @@
+/* wrapper para scroll/responsive */
+.wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.04);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.04);
+}
+
+/* tabla base */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #0f172a;
+  table-layout: auto;
+}
+
+/* cabeza */
+.thead {
+  background: linear-gradient(180deg, #fbfdff 0%, #f8fafc 100%);
+  border-bottom: 1px solid rgba(15,23,42,0.06);
+}
+
+.th {
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0f172a;
+  text-align: left;
+}
+
+/* cuerpo */
+.tbody {}
+
+.row {
+  transition: background 120ms ease, transform 120ms ease;
+  cursor: default;
+}
+
+.row:hover {
+  background: rgba(99,102,241,0.03);
+}
+
+/* celdas: mayor altura y alineación vertical centrada */
+.td {
+  padding: 16px;
+  font-size: 0.98rem;
+  color: #334155;
+  vertical-align: middle; /* importante para centrar */
+  border-bottom: 1px solid rgba(15,23,42,0.03);
+  white-space: normal;    /* permitir varias líneas y evitar solapamientos */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- NUEVO: forzar layout horizontal en la primera estructura interna de la celda
+     Esto evita depender de clases de otros módulos (rowUser) y asegura alineación. --- */
+.td > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px; /* ajusta para dar espacio al avatar y texto */
+}
+
+/* destacar la primera columna visualmente (si aplica) */
+.td:first-child {
+  font-weight: 600;
+}
+
+/* estilos para cargas / vacío */
+.loadingCell,
+.emptyCell {
+  padding: 20px;
+  text-align: center;
+  color: #64748b;
+}
+
+/* responsive: en pantallas pequeñas reducir paddings y ajustar texto */
+@media (max-width: 640px) {
+  .th, .td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  .table {
+    font-size: 0.9rem;
+  }
+}

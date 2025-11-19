@@ -1,0 +1,71 @@
+:root {
+  /* Paleta principal */
+  --primary: #3b82f6;
+  --accent:  #8b5cf6;
+  --danger:  #ef4444;
+
+  /* Layout */
+  --sidebar-width: 260px;
+  --navbar-height: 72px;
+
+  /* Colores - Jerarquía clara */
+  --sidebar-bg: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+  --sidebar-text: #cbd5e1;
+  --navbar-bg: #ffffff;
+  --content-bg: #f8fafc;
+  --surface: #ffffff;
+  --muted: #64748b;
+  --text-default: #0f172a;
+  --border-light: #e5e7eb;
+}
+
+/* Fondo global blanco */
+html, body, #__next {
+  height: 100%;
+  background: var(--bg-white) !important;
+  margin: 0;
+  padding: 0;
+  color: var(--text-default);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Layout principal: Sidebar + Contenido */
+.protectedLayout {
+  display: block; /* ahora el sidebar será fixed, no necesitamos flex aquí */
+  min-height: 100vh;
+  background: var(--bg-white) !important;
+}
+
+/* Wrapper que contiene Navbar + Main */
+.mainWrapper {
+  /* desplaza todo el contenido para dejar espacio al sidebar fixed */
+  padding-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Ajuste para que el navbar no solape el contenido */
+.mainWrapper > .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 80; /* por debajo del sidebar (sidebar tendrá z-index mayor) */
+}
+
+/* Área principal de contenido (debajo del navbar) */
+.mainContent {
+  flex: 1;
+  overflow-y: auto;
+  background: #f8fafc;
+  padding: 32px;
+  box-sizing: border-box;
+  min-height: calc(100vh - var(--navbar-height));
+}
+
+/* Asegurar visibilidad de contenedores internos */
+.mainContent .container,
+.mainContent section,
+.mainContent .pageLayout {
+  background: var(--surface) !important;
+}

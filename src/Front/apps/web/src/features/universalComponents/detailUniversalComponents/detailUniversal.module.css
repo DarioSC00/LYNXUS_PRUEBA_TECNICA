@@ -1,0 +1,134 @@
+.container {
+  background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12), 0 8px 20px rgba(15, 23, 42, 0.08);
+  padding: 28px;
+  max-width: 1280px;
+  max-height: 90vh;
+  width: calc(100% - 48px);
+  margin: 0 auto;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  color: #0f172a;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  animation: modalEnter 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* pequeña cabecera interna si la usas */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+/* Animación de entrada mejorada */
+@keyframes modalEnter {
+  from {
+    transform: translateY(12px) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.center {
+  text-align: center;
+  color: #64748b;
+  padding: 16px 0;
+  font-size: 0.95rem;
+}
+
+.error {
+  color: #991b1b;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-radius: 10px;
+  border: 1.5px solid #fecaca;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.meta {
+  color: #64748b;
+  padding: 10px 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Contenido principal mejorado */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Fila de par clave/valor mejorada */
+.row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
+  border: 1px solid #e8eaed;
+  transition: all 0.2s ease;
+}
+
+.row:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #f3f4f6 100%);
+  border-color: #d1d5db;
+}
+
+/* clave mejorada */
+.key {
+  min-width: 140px;
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+/* valor mejorado */
+.value {
+  flex: 1;
+  color: #334155;
+  font-size: 0.9375rem;
+  word-break: break-word;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* pequeños ajustes responsivos */
+@media (max-width: 520px) {
+  .container {
+    padding: 20px;
+    width: calc(100% - 28px);
+    border-radius: 12px;
+  }
+  .key {
+    min-width: 100px;
+    font-size: 0.8125rem;
+  }
+  .value {
+    font-size: 0.875rem;
+  }
+  .row {
+    padding: 12px;
+    gap: 12px;
+  }
+}

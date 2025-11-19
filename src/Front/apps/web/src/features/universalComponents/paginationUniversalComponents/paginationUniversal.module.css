@@ -1,0 +1,195 @@
+/* ===============================================
+   PAGINATION UNIVERSAL COMPONENT
+   =============================================== */
+
+.paginationContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  border-radius: 0 0 12px 12px;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Info de items */
+.paginationInfo {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.paginationInfo .highlight {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Controles de paginación */
+.paginationControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Botones Previous/Next */
+.paginationButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #111827;
+}
+
+.paginationButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.paginationButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.paginationButton svg {
+  flex-shrink: 0;
+}
+
+/* Ocultar texto en móviles */
+.buttonText {
+  display: inline;
+}
+
+@media (max-width: 640px) {
+  .buttonText {
+    display: none;
+  }
+
+  .paginationButton {
+    padding: 0.5rem;
+  }
+}
+
+/* Números de página */
+.pageNumbers {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pageNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pageNumber:hover:not(:disabled) {
+  background: #f8fafc;
+  color: #111827;
+  border-color: #e2e8f0;
+}
+
+.pageNumber:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.pageNumberActive {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+}
+
+.pageNumberActive:hover {
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  color: white;
+  border-color: transparent;
+}
+
+/* Ellipsis */
+.ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  user-select: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .paginationContainer {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+  }
+
+  .paginationInfo {
+    text-align: center;
+    order: 2;
+    margin-top: 0.5rem;
+  }
+
+  .paginationControls {
+    justify-content: center;
+    order: 1;
+  }
+
+  .pageNumbers {
+    gap: 0.125rem;
+  }
+
+  .pageNumber {
+    min-width: 2rem;
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Variante compacta (opcional) */
+.paginationContainer.compact {
+  padding: 0.75rem 1rem;
+}
+
+.paginationContainer.compact .paginationButton {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.paginationContainer.compact .pageNumber {
+  min-width: 2rem;
+  height: 2rem;
+  font-size: 0.8rem;
+}
+
+.paginationContainer.compact .paginationInfo {
+  font-size: 0.8rem;
+}

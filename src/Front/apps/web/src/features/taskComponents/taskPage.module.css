@@ -1,0 +1,502 @@
+/* ===============================================
+   SHARED PAGE STYLES - Tareas
+   =============================================== */
+
+/* Page Container */
+.pageContainer {
+  padding: 1.5rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+  color: #0f172a;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumbText {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* Page Header */
+.pageHeader {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.pageCount {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pageActions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Search Input */
+.searchInput {
+  padding: 0.625rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  min-width: 260px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  background: white;
+  color: #111827;
+}
+
+.searchInput:focus {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #6366f1;
+}
+
+.searchInput::placeholder {
+  color: #94a3b8;
+}
+
+/* Page Content */
+.pageContent {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+/* States */
+.loadingState {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.emptyState {
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #6b7280;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.emptyState svg {
+  color: #d1d5db;
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+  margin: 0;
+}
+
+.emptyState small {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+/* Task-specific table cells */
+.taskCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.taskTitle {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.95rem;
+}
+
+.taskDescription {
+  font-size: 0.85rem;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Badges */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.statusBadge[data-status="todo"] {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.statusBadge[data-status="doing"] {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.statusBadge[data-status="done"] {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.priorityBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.priorityBadge[data-priority="low"] {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.priorityBadge[data-priority="med"] {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.priorityBadge[data-priority="high"] {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.5rem 0.875rem;
+  border-radius: 6px;
+  font-weight: 400;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: #3b82f6;
+}
+
+.btn:hover {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 1rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.filterSelect {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #111827;
+  font-size: 0.875rem;
+  outline: none;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.filterSelect:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+}
+
+/* Detail Modal specific */
+.keyValue {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.keyValue dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.keyValue dd {
+  font-size: 0.95rem;
+  color: #111827;
+  margin: 0;
+}
+
+/* ===============================================
+   TASK DETAIL MODAL STYLES
+   =============================================== */
+
+/* Loading and Empty States */
+.taskDetailLoading {
+  text-align: center;
+  color: #9ca3af;
+}
+
+.taskDetailNoData {
+  text-align: center;
+  color: #9ca3af;
+}
+
+/* Task Info Grid */
+.taskInfoContainer {
+  margin-bottom: 1.5rem;
+}
+
+.taskInfoGrid {
+  display: grid;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.taskInfoRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.taskInfoLabel {
+  min-width: 120px;
+  color: #6b7280;
+  font-weight: 700;
+}
+
+/* Status Badge */
+.taskStatusBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.taskStatusTodo {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.taskStatusDoing {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.taskStatusDone {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+/* Priority Badge */
+.taskPriorityBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.taskPriorityLow {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.taskPriorityMedium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.taskPriorityHigh {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Task Description Section */
+.taskDescriptionSection {
+  margin-bottom: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.taskDescriptionTitle {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.taskDescriptionText {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+/* Task Comments Section */
+.taskCommentsSection {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.taskCommentsTitle {
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Task Comment Input */
+.taskCommentInputContainer {
+  margin-bottom: 1rem;
+}
+
+.taskCommentTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.taskCommentBtnContainer {
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
+.taskCommentBtn {
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.taskCommentBtn:hover {
+  background-color: #2563eb;
+}
+
+.taskCommentBtnDisabled {
+  background-color: #d1d5db !important;
+  cursor: not-allowed !important;
+}
+
+/* Task Comments Loading and Empty States */
+.taskCommentsLoading {
+  text-align: center;
+  color: #9ca3af;
+  padding: 1rem;
+}
+
+.taskCommentsEmpty {
+  text-align: center;
+  color: #9ca3af;
+  padding: 1rem;
+  font-size: 0.875rem;
+}
+
+/* Task Comment List */
+.taskCommentList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.taskCommentItem {
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.taskCommentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.taskCommentAuthor {
+  font-size: 0.875rem;
+  color: #111827;
+  font-weight: 700;
+}
+
+.taskCommentDate {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-left: 0.5rem;
+}
+
+.taskCommentDeleteBtn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: #ef4444;
+  background-color: transparent;
+  border: 1px solid #ef4444;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.taskCommentDeleteBtn:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+.taskCommentBody {
+  font-size: 0.875rem;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+/* Task Due Date */
+.taskDueDateNormal {
+  color: #0f172a;
+}
+
+.taskDueDateOverdue {
+  color: #991b1b;
+}
