@@ -138,7 +138,6 @@ const TaskDetailComponent: React.FC<Props> = ({ taskId, open, onClose, onUpdate 
       toast.success("✅ Comment added successfully!");
       setNewComment("");
       await loadComments();
-      onUpdate?.();
     } catch (err) {
       console.error("Error creating comment:", err);
       toast.error("❌ Could not create comment. Please try again.");
@@ -158,7 +157,6 @@ const TaskDetailComponent: React.FC<Props> = ({ taskId, open, onClose, onUpdate 
       await commentService.deleteComment(pendingCommentId);
       toast.success("🗑️ Comment deleted successfully");
       setComments((c) => c.filter((x) => x.id !== pendingCommentId));
-      onUpdate?.();
     } catch (err) {
       console.error("Error deleting comment:", err);
       toast.error("❌ Could not delete comment. Please try again.");
@@ -285,7 +283,17 @@ const TaskDetailComponent: React.FC<Props> = ({ taskId, open, onClose, onUpdate 
                   <Typography variant="h6" sx={{ mb: 2, fontWeight: 700, color: '#374151' }}>
                     📝 Description
                   </Typography>
-                  <Typography sx={{ color: '#4b5563', lineHeight: 1.7 }}>
+                  <Typography
+                    sx={{
+                      color: '#4b5563',
+                      lineHeight: 1.7,
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word',
+                      overflowWrap: 'anywhere',
+                      maxHeight: '220px',
+                      overflowY: 'auto',
+                    }}
+                  >
                     {task.description}
                   </Typography>
                 </Paper>

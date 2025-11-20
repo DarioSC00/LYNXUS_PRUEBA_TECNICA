@@ -108,6 +108,24 @@ export default function TaskCreateComponent({ projectId, defaultOpen = false, op
       return;
     }
 
+    // Validate due date: it cannot be earlier than today
+    if (formData.due_date) {
+      try {
+        const selected = new Date(formData.due_date);
+        selected.setHours(0, 0, 0, 0);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selected < today) {
+          toast.error("⚠️ Due date cannot be earlier than today");
+          return;
+        }
+      } catch (err) {
+        // If parsing fails, block submission
+        toast.error("⚠️ Invalid due date");
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       const taskData: taskService.CreateTaskInput = {
@@ -197,6 +215,8 @@ export default function TaskCreateComponent({ projectId, defaultOpen = false, op
               rows={4}
               value={formData.description || ""}
               onChange={(e) => handleChange("description", e.target.value)}
+              inputProps={{ maxLength: 300 }}
+              helperText={`${(formData.description || "").length}/300`}
               placeholder="Provide detailed task description, requirements, and acceptance criteria..."
               variant="outlined"
               disabled={loading}

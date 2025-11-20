@@ -43,7 +43,7 @@ export default function ProjectCreateComponent({ defaultOpen = false, onCreated 
   const [users, setUsers] = useState<UserItem[]>([]);
   const [loadingUsers, setLoadingUsers] = useState<boolean>(false);
 
-  // Cargar usuarios al abrir el diálogo
+  // Load users when opening the dialog
   useEffect(() => {
     if (open) {
       loadUsers();
@@ -75,10 +75,10 @@ export default function ProjectCreateComponent({ defaultOpen = false, onCreated 
     }
     setSubmitting(true);
     try {
-      // Crear el proyecto primero
+      // Create the project first
       const newProject = await projectService.createProject(formData);
       
-      // Si hay miembros seleccionados, agregarlos
+      // If there are selected members, add them
       if (selectedMembers.length > 0 && newProject?.id) {
         const memberPromises = selectedMembers.map((member) =>
           projectService.addProjectMember(newProject.id, member.id)
@@ -180,6 +180,8 @@ export default function ProjectCreateComponent({ defaultOpen = false, onCreated 
                 rows={6}
                 value={formData.description || ""}
                 onChange={(e) => handleInputChange("description", e.target.value)}
+                inputProps={{ maxLength: 300 }}
+                helperText={`${(formData.description || "").length}/300`}
                 placeholder="Describe your project goals, scope, key deliverables, timeline, and team responsibilities..."
                 variant="outlined"
                 disabled={submitting}

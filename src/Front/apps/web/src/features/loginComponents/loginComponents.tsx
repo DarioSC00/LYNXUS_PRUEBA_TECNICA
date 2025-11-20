@@ -42,7 +42,30 @@ export default function LoginPage() {
       toast.success("🎉 Login successful! Welcome back.");
       router.push("/user");
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "❌ Login failed. Please check your credentials.";
+      let errorMessage = "❌ Login failed. Please check your credentials.";
+      try {
+        // axios error object has .response.status and .response.data.detail
+        const anyErr = err as any;
+        const status = anyErr?.response?.status;
+        const detail = anyErr?.response?.data?.detail || anyErr?.response?.data?.message;
+
+        if (detail) {
+          errorMessage = String(detail);
+        } else if (status === 401) {
+          errorMessage = "Invalid credentials. Please check your email and password.";
+        } else if (status === 404) {
+          errorMessage = "User not found. Please check your email or register.";
+        } else if (status === 403) {
+          errorMessage = "Account inactive. Please contact support to reactivate your account.";
+        } else if (err instanceof Error && err.message) {
+          errorMessage = err.message;
+        } else if (typeof status === 'number') {
+          errorMessage = `Request failed (status ${status}). Please try again.`;
+        }
+      } catch (e) {
+        // fallback - keep default message
+      }
+
       toast.error(errorMessage);
       setError(errorMessage);
     } finally {

@@ -34,12 +34,12 @@ def create_access_token(data: dict, expires_delta: Optional[int] = None):
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
     """
-    Devuelve el usuario actual autenticado según el token JWT.
-    Lanza excepción si no es válido o usuario no existe.
+    Return the currently authenticated user according to the JWT token.
+    Raises an exception if the token is invalid or the user does not exist.
     """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="No se pudo validar las credenciales",
+        detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
 

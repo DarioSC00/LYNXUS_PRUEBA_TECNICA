@@ -55,21 +55,21 @@ export type ListTasksParams = {
   limit?: number;
 };
 
-// Opciones para los selects
+// Options for selects (labels in English)
 export const STATUS_OPTIONS: { value: StatusType; label: string; color: string }[] = [
-  { value: "todo", label: "Por hacer", color: "#fef3c7" },
-  { value: "doing", label: "En progreso", color: "#dbeafe" },
-  { value: "done", label: "Completado", color: "#d1fae5" },
+  { value: "todo", label: "To do", color: "#fef3c7" },
+  { value: "doing", label: "In progress", color: "#dbeafe" },
+  { value: "done", label: "Completed", color: "#d1fae5" },
 ];
 
 export const PRIORITY_OPTIONS: { value: PriorityType; label: string; color: string }[] = [
-  { value: "low", label: "Baja", color: "#e5e7eb" },
-  { value: "medium", label: "Media", color: "#fef3c7" },
-  { value: "high", label: "Alta", color: "#fee2e2" },
+  { value: "low", label: "Low", color: "#e5e7eb" },
+  { value: "medium", label: "Medium", color: "#fef3c7" },
+  { value: "high", label: "High", color: "#fee2e2" },
 ];
 
 /**
- * Listar tareas (con filtros opcionales)
+ * List tasks (with optional filters)
  */
 export async function listTasks(params: ListTasksParams = {}): Promise<{ items: TaskItem[]; total: number }> {
   try {

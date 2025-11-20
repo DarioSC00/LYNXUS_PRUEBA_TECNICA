@@ -176,14 +176,18 @@ uvicorn app.main:app --reload --port 8000
 cd Front/apps/web
 
 # Instalar dependencias
-pnpm install
+# pnpm install
+# Alternativa con npm:
+# npm install
 
 # Configurar variables de entorno
 cp .env.example .env.local
 # Editar .env.local con tus valores
 
 # Iniciar servidor de desarrollo
-pnpm dev
+# pnpm dev
+# Alternativa con npm:
+# npm run dev
 ```
 
 ## 🗄️ Base de Datos
@@ -288,6 +292,7 @@ alembic downgrade base
 - ✅ Confirmaciones antes de eliminar
 - ✅ Indicadores de carga
 - ✅ Notificaciones toast
+- **Notificaciones:** Las notificaciones en cliente se implementan con `React-Toastify`.
 - ✅ Navegación por teclado
 
 ## 🧪 Pruebas

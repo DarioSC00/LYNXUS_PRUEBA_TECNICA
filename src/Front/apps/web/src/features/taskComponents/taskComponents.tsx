@@ -89,7 +89,7 @@ function SortableTaskRow({
   const now = new Date();
   const isOverdue = dueDate && dueDate < now;
   const dueDateFormatted = dueDate
-    ? dueDate.toLocaleDateString("es-ES", {
+    ? dueDate.toLocaleDateString("en-US", {
         day: "2-digit",
         month: "short",
         year: "numeric",
@@ -120,7 +120,7 @@ function SortableTaskRow({
             {task.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {task.description || "Sin descripción"}
+            {task.description || "No description"}
           </Typography>
         </Box>
       </TableCell>

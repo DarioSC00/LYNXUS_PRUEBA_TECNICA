@@ -144,7 +144,7 @@ export default function ProfilePage() {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Paper sx={{ p: 4, textAlign: "center" }}>
-          <Typography variant="h6">No se pudo cargar el perfil</Typography>
+          <Typography variant="h6">Could not load profile</Typography>
         </Paper>
       </Container>
     );
@@ -177,7 +177,7 @@ export default function ProfilePage() {
           </Avatar>
           <Box sx={{ flex: 1 }}>
             <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
-              {userData.name || "Usuario"}
+              {userData.name || "User"}
             </Typography>
             <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mb: 2 }}>
               <Chip
@@ -189,7 +189,7 @@ export default function ProfilePage() {
               {userData.created_at && (
                 <Chip
                   icon={<CalendarTodayIcon />}
-                  label={`Registrado: ${new Date(userData.created_at).toLocaleDateString("es-ES", {
+                  label={`Registered: ${new Date(userData.created_at).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -216,7 +216,7 @@ export default function ProfilePage() {
                     {projects.length}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Proyectos
+                    Projects
                   </Typography>
                 </Box>
               </Box>
@@ -234,7 +234,7 @@ export default function ProfilePage() {
                     {tasks.length}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Tareas asignadas
+                    Assigned tasks
                   </Typography>
                 </Box>
               </Box>
@@ -252,7 +252,7 @@ export default function ProfilePage() {
                     {completedTasks}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Completadas
+                    Completed
                   </Typography>
                 </Box>
               </Box>
@@ -270,7 +270,7 @@ export default function ProfilePage() {
                     {pendingTasks}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Pendientes
+                    Pending
                   </Typography>
                 </Box>
               </Box>
@@ -290,44 +290,44 @@ export default function ProfilePage() {
             px: 2,
           }}
         >
-          <Tab label="Información" />
-          <Tab label="Proyectos" />
-          <Tab label="Tareas" />
+          <Tab label="Information" />
+          <Tab label="Projects" />
+          <Tab label="Tasks" />
         </Tabs>
 
         <TabPanel value={tabValue} index={0}>
           <Box sx={{ px: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Información del perfil
+              Profile Information
             </Typography>
             <List>
               <ListItem>
                 <ListItemText
-                  primary="Nombre completo"
-                  secondary={userData.name || "No especificado"}
+                  primary="Full name"
+                  secondary={userData.name || "Not specified"}
                 />
               </ListItem>
               <Divider />
               <ListItem>
                 <ListItemText
-                  primary="Correo electrónico"
+                  primary="Email"
                   secondary={userData.email}
                 />
               </ListItem>
               <Divider />
               <ListItem>
                 <ListItemText
-                  primary="Fecha de registro"
+                  primary="Registered on"
                   secondary={
                     userData.created_at
-                      ? new Date(userData.created_at).toLocaleString("es-ES", {
+                      ? new Date(userData.created_at).toLocaleString("en-US", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
                           hour: "2-digit",
                           minute: "2-digit",
                         })
-                      : "No disponible"
+                      : "Not available"
                   }
                 />
               </ListItem>
@@ -338,11 +338,11 @@ export default function ProfilePage() {
         <TabPanel value={tabValue} index={1}>
           <Box sx={{ px: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Mis Proyectos ({projects.length})
+              My Projects ({projects.length})
             </Typography>
             {projects.length === 0 ? (
               <Typography variant="body2" color="text.secondary">
-                No tienes proyectos asignados.
+                You have no assigned projects.
               </Typography>
             ) : (
               <List>
@@ -365,14 +365,14 @@ export default function ProfilePage() {
                             </Typography>
                             {project.role && (
                               <Chip
-                                label={project.role === "owner" ? "Propietario" : "Miembro"}
+                                label={project.role === "owner" ? "Owner" : "Member"}
                                 size="small"
                                 color={project.role === "owner" ? "primary" : "default"}
                               />
                             )}
                           </Box>
                         }
-                        secondary={project.description || "Sin descripción"}
+                        secondary={project.description || "No description"}
                       />
                     </ListItem>
                     <Divider />
@@ -386,11 +386,11 @@ export default function ProfilePage() {
         <TabPanel value={tabValue} index={2}>
           <Box sx={{ px: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Tareas Asignadas ({tasks.length})
+              Assigned Tasks ({tasks.length})
             </Typography>
             {tasks.length === 0 ? (
               <Typography variant="body2" color="text.secondary">
-                No tienes tareas asignadas.
+                You have no assigned tasks.
               </Typography>
             ) : (
               <List>
@@ -411,10 +411,10 @@ export default function ProfilePage() {
                             <Chip
                               label={
                                 task.status === "done"
-                                  ? "Completada"
+                                  ? "Completed"
                                   : task.status === "doing"
-                                  ? "En progreso"
-                                  : "Por hacer"
+                                  ? "In progress"
+                                  : "To do"
                               }
                               size="small"
                               color={getStatusColor(task.status) as "success" | "info" | "default"}
@@ -422,10 +422,10 @@ export default function ProfilePage() {
                             <Chip
                               label={
                                 task.priority === "high"
-                                  ? "Alta"
+                                  ? "High"
                                   : task.priority === "medium"
-                                  ? "Media"
-                                  : "Baja"
+                                  ? "Medium"
+                                  : "Low"
                               }
                               size="small"
                               color={getPriorityColor(task.priority) as "error" | "warning" | "success"}
@@ -441,7 +441,7 @@ export default function ProfilePage() {
                             )}
                             {task.due_date && (
                               <Typography variant="caption" color="text.secondary">
-                                Vence: {new Date(task.due_date).toLocaleDateString("es-ES")}
+                                Due: {new Date(task.due_date).toLocaleDateString("en-US")}
                               </Typography>
                             )}
                           </Box>

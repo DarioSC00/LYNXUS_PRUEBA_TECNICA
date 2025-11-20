@@ -75,12 +75,12 @@ def get_current_active_user(
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Usuario no encontrado"
+            detail="User not found"
         )
     if not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Usuario inactivo"
+            detail="Inactive user"
         )
 
     return user

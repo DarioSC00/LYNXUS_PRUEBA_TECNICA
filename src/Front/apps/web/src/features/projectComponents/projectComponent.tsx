@@ -57,7 +57,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-// Tipos concretos para evitar `any`
+// Concrete types to avoid `any`
 type Task = {
   id: number;
   title: string;
@@ -69,7 +69,7 @@ type Task = {
   created_at?: string;
 };
 
-// Componente sortable para cada tarea
+// Sortable component for each task
 function SortableTaskItem({
   task,
   onClick,
@@ -191,7 +191,7 @@ type ProjectItem = {
   created_at?: string;
   owner?: { id: number; name?: string; email?: string } | null;
   owner_id?: number;
-  tasks?: Task[]; // ahora tipado
+  tasks?: Task[]; // now typed
 };
 
 export default function ProjectList() {
@@ -222,7 +222,7 @@ export default function ProjectList() {
     })
   );
 
-  // Handler para drag end de tareas
+  // Handler for drag end of tasks
   const handleTaskDragEnd = (projectId: number) => (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -351,7 +351,7 @@ export default function ProjectList() {
     onCreated?: () => void;
     onClose?: () => void;
   };
-  // castea el componente para evitar el error de IntrinsicAttributes
+  // cast the component to avoid IntrinsicAttributes error
   const TaskCreateModal = TaskCreate as unknown as React.ComponentType<TaskCreateProps>;
 
   const getStatusColor = (status: string) => {

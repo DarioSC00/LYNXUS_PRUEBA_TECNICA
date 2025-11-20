@@ -120,7 +120,7 @@ export default function ProjectDetail({
     };
   }, [open, projectId, reloadKey]);
 
-  // Cargar comentarios del proyecto
+  // Load project comments
   useEffect(() => {
     if (!open || !projectId) {
       setComments([]);
@@ -137,8 +137,8 @@ export default function ProjectDetail({
       setComments(Array.isArray(res) ? res : []);
     } catch (err: any) {
       console.error("[detailProject] error loading comments:", err);
-      // Si es 404, 403, o 401, simplemente mostrar vacío sin error
-      // 401 significa token expirado - usuario puede seguir usando la app, solo sin comentarios
+      // If it's 404, 403, or 401, just show empty comments without an error
+      // 401 means token expired - user can continue using the app, just without comments
       if (err?.response?.status === 404 || err?.response?.status === 403 || err?.response?.status === 401) {
         setComments([]);
       } else {
@@ -219,7 +219,7 @@ export default function ProjectDetail({
       toast.success("✅ Team member added successfully!");
       setShowAddMember(false);
       setSelectedUserId(null);
-      setReloadKey(k => k + 1); // Recargar datos del proyecto
+      setReloadKey(k => k + 1); // Reload project data
       onUpdate?.();
     } catch (err: any) {
       console.error("[detailProject] error adding member:", err);
@@ -240,7 +240,7 @@ export default function ProjectDetail({
     try {
       await projectService.removeProjectMember(projectId, pendingMemberId);
       toast.success("🗑️ Team member removed successfully");
-      setReloadKey(k => k + 1); // Recargar datos del proyecto
+      setReloadKey(k => k + 1); // Reload project data
       onUpdate?.();
     } catch (err: any) {
       console.error("[detailProject] error removing member:", err);
@@ -314,7 +314,17 @@ export default function ProjectDetail({
                 <Typography variant="h6" sx={{ mb: 2, fontWeight: 700, color: '#374151' }}>
                   📋 Description
                 </Typography>
-                <Typography sx={{ color: '#4b5563', lineHeight: 1.7 }}>
+                <Typography
+                  sx={{
+                    color: '#4b5563',
+                    lineHeight: 1.7,
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere',
+                    maxHeight: '260px',
+                    overflowY: 'auto',
+                  }}
+                >
                   {data.description || "No description"}
                 </Typography>
               </Paper>

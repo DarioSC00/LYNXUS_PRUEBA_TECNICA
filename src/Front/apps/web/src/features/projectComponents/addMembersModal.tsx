@@ -35,7 +35,7 @@ export default function AddMembersModal({ projectId, open, onClose, onMemberAdde
   const [confirmDeleteMember, setConfirmDeleteMember] = useState(false);
   const [pendingMemberId, setPendingMemberId] = useState<number | null>(null);
 
-  // Cargar nombre del proyecto
+  // Load project name
   useEffect(() => {
     if (open && projectId) {
       (async () => {
@@ -50,7 +50,7 @@ export default function AddMembersModal({ projectId, open, onClose, onMemberAdde
     }
   }, [open, projectId]);
 
-  // Cargar usuarios disponibles
+  // Load available users
   useEffect(() => {
     if (open) {
       (async () => {
@@ -68,7 +68,7 @@ export default function AddMembersModal({ projectId, open, onClose, onMemberAdde
     }
   }, [open]);
 
-  // Cargar miembros actuales del proyecto
+  // Load current project members
   useEffect(() => {
     if (open && projectId) {
       (async () => {
@@ -94,7 +94,7 @@ export default function AddMembersModal({ projectId, open, onClose, onMemberAdde
 
     const userId = Number(selectedUserId);
     
-    // Verificar si ya es miembro
+    // Check if already a member
     if (members.find(m => m.id === userId)) {
       toast.error("⚠️ This user is already a team member");
       return;
@@ -180,7 +180,7 @@ export default function AddMembersModal({ projectId, open, onClose, onMemberAdde
           </div>
         </div>
 
-        {/* Sección: Agregar nuevo miembro */}
+        {/* Section: Add new member */}
         <div>
           <h3 style={{ 
             fontSize: "1rem", 
@@ -192,7 +192,7 @@ export default function AddMembersModal({ projectId, open, onClose, onMemberAdde
           </h3>
           
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-            {/* Select de usuario */}
+            {/* User select */}
             <div style={{ display: "flex", gap: "0.75rem" }}>
               <select
                 value={selectedUserId}
@@ -260,7 +260,7 @@ export default function AddMembersModal({ projectId, open, onClose, onMemberAdde
         {/* Separador */}
         <div style={{ borderTop: "1px solid #e5e7eb" }} />
 
-        {/* Sección: Miembros actuales */}
+        {/* Section: Current members */}
         <div>
           <h3 style={{ 
             fontSize: "1rem", 
@@ -271,7 +271,7 @@ export default function AddMembersModal({ projectId, open, onClose, onMemberAdde
             Current Members ({members.length})
           </h3>
 
-          {/* Búsqueda en miembros */}
+          {/* Search members */}
           <div style={{ marginBottom: "1rem" }}>
             <input
               type="text"
@@ -391,7 +391,7 @@ export default function AddMembersModal({ projectId, open, onClose, onMemberAdde
           )}
         </div>
 
-        {/* Botón de cerrar */}
+        {/* Close button */}
         <div style={{ 
           display: "flex", 
           justifyContent: "flex-end",
