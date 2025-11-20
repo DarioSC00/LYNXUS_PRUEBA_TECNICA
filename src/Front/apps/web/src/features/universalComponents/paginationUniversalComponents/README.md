@@ -1,16 +1,16 @@
 # Pagination Universal Component
 
-Componente de paginación reutilizable y accesible para todas las vistas de la aplicación.
+A reusable, accessible pagination component for use across the application.
 
-## Características
+## Features
 
-- ✅ **Responsive**: Se adapta a móviles y tablets
-- ✅ **Accesible**: ARIA labels y navegación por teclado
-- ✅ **Inteligente**: Muestra ellipsis (...) cuando hay muchas páginas
-- ✅ **Informativo**: Muestra el rango de items actual
-- ✅ **Consistente**: Sigue el diseño visual de la aplicación
+- ✅ Responsive: adapts to mobile and tablet layouts
+- ✅ Accessible: ARIA labels and keyboard navigation
+- ✅ Smart: displays ellipses (...) when there are many pages
+- ✅ Informative: shows the current item range
+- ✅ Consistent: follows the application's visual design
 
-## Uso Básico
+## Basic Usage
 
 ```tsx
 import PaginationUniversal from "../universalComponents/paginationUniversalComponents/paginationUniversal";
@@ -22,8 +22,7 @@ function MyList() {
 
   return (
     <div>
-      {/* Tu contenido */}
-      
+      {/* Your content */}
       <PaginationUniversal
         currentPage={currentPage}
         totalPages={Math.ceil(totalItems / pageSize)}
@@ -39,18 +38,18 @@ function MyList() {
 
 ## Props
 
-| Prop | Tipo | Requerido | Descripción |
+| Prop | Type | Required | Description |
 |------|------|-----------|-------------|
-| `currentPage` | `number` | ✅ | Página actual (1-indexed) |
-| `totalPages` | `number` | ✅ | Total de páginas disponibles |
-| `totalItems` | `number` | ⚪ | Total de items (para mostrar info) |
-| `pageSize` | `number` | ⚪ | Items por página (para mostrar info) |
-| `onPageChange` | `(page: number) => void` | ✅ | Callback cuando cambia la página |
-| `disabled` | `boolean` | ⚪ | Deshabilitar controles (default: false) |
+| `currentPage` | `number` | ✅ | Current page (1-indexed) |
+| `totalPages` | `number` | ✅ | Total available pages |
+| `totalItems` | `number` | ⚪ | Total items (for info display) |
+| `pageSize` | `number` | ⚪ | Items per page (for info display) |
+| `onPageChange` | `(page: number) => void` | ✅ | Callback when the page changes |
+| `disabled` | `boolean` | ⚪ | Disable controls (default: false) |
 
-## Ejemplos de Implementación
+## Implementation Examples
 
-### 1. Lista de Usuarios
+### 1. Users List
 
 ```tsx
 const [users, setUsers] = useState([]);
@@ -84,7 +83,7 @@ return (
 );
 ```
 
-### 2. Lista de Proyectos con Búsqueda
+### 2. Projects List with Search
 
 ```tsx
 const [projects, setProjects] = useState([]);
@@ -93,7 +92,7 @@ const [currentPage, setCurrentPage] = useState(1);
 const [totalItems, setTotalItems] = useState(0);
 const pageSize = 10;
 
-// Reset page cuando cambia la búsqueda
+// Reset page when search changes
 useEffect(() => {
   setCurrentPage(1);
 }, [searchQuery]);
@@ -126,7 +125,7 @@ return (
 );
 ```
 
-## Comportamiento Visual
+## Visual Behavior
 
 ### Desktop
 ```
@@ -139,36 +138,36 @@ Showing 1 to 10 of 45 results    [← Previous] 1 2 3 ... 5 [Next →]
             [←] 1 2 3 ... 5 [→]
 ```
 
-### Con muchas páginas
+### With many pages
 ```
-Página 1:     [← Previous] 1 2 3 4 ... 10 [Next →]
-Página 5:     [← Previous] 1 ... 4 5 6 ... 10 [Next →]
-Página 10:    [← Previous] 1 ... 7 8 9 10 [Next →]
+Page 1:     [← Previous] 1 2 3 4 ... 10 [Next →]
+Page 5:     [← Previous] 1 ... 4 5 6 ... 10 [Next →]
+Page 10:    [← Previous] 1 ... 7 8 9 10 [Next →]
 ```
 
-## Estilos CSS
+## CSS Classes
 
-El componente usa módulos CSS con las siguientes clases principales:
+The component uses CSS modules with the following main classes:
 
-- `.paginationContainer`: Contenedor principal
-- `.paginationInfo`: Información de items
-- `.paginationControls`: Controles de navegación
-- `.paginationButton`: Botones Previous/Next
-- `.pageNumber`: Botones de número de página
-- `.pageNumberActive`: Página activa
-- `.ellipsis`: Puntos suspensivos
+- `.paginationContainer`: main container
+- `.paginationInfo`: item info display
+- `.paginationControls`: navigation controls
+- `.paginationButton`: Previous/Next buttons
+- `.pageNumber`: page number buttons
+- `.pageNumberActive`: active page
+- `.ellipsis`: ellipsis dots
 
-## Accesibilidad
+## Accessibility
 
-- ✅ Botones con `aria-label` descriptivos
-- ✅ Página actual marcada con `aria-current="page"`
-- ✅ Estado disabled correctamente manejado
-- ✅ Navegable por teclado (Tab + Enter/Space)
-- ✅ Contraste de colores AAA
+- ✅ Buttons include descriptive `aria-label`s
+- ✅ Current page marked with `aria-current="page"`
+- ✅ Disabled state handled correctly
+- ✅ Keyboard navigable (Tab + Enter/Space)
+- ✅ High contrast colors
 
-## Integración con Backend
+## Backend Integration
 
-El componente espera que tu API devuelva respuestas paginadas con este formato:
+The component expects your API to return paginated responses in this format:
 
 ```json
 {
@@ -179,12 +178,12 @@ El componente espera que tu API devuelva respuestas paginadas con este formato:
 }
 ```
 
-Parámetros de query esperados:
-- `page`: número de página (1-indexed)
-- `page_size` o `limit`: items por página
+Query parameters expected:
+- `page`: page number (1-indexed)
+- `page_size` or `limit`: items per page
 
-## Notas
+## Notes
 
-- Si `totalPages <= 1`, el componente **no se renderiza** (auto-oculta)
-- Los parámetros `totalItems` y `pageSize` son opcionales pero **recomendados** para mostrar la info de items
-- El componente es **stateless**, toda la lógica de estado debe manejarse en el componente padre
+- If `totalPages <= 1`, the component will not render (it auto-hides)
+- `totalItems` and `pageSize` are optional but recommended for showing item info
+- The component is stateless; parent component should manage pagination state
