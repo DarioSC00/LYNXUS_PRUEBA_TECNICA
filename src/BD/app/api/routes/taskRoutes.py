@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
+from datetime import datetime
 
 # Database
 from app.core.database import get_db
@@ -38,6 +39,15 @@ def create_task(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Project not found"
             )
+        # Server-side validation: do not allow due_date in the past
+        if getattr(task_in, "due_date", None) is not None:
+            due = getattr(task_in, "due_date")
+            if due.date() < datetime.utcnow().date():
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="due_date cannot be in the past"
+                )
+
         task = task_crud.create(
             db=db,
             obj_in=task_in,
@@ -125,6 +135,15 @@ def update_task(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You don't have permission to update this task"
         )
+    # Server-side validation on update: if due_date provided, it cannot be in the past
+    if getattr(task_update, "due_date", None) is not None:
+        due = getattr(task_update, "due_date")
+        if due.date() < datetime.utcnow().date():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="due_date cannot be in the past"
+            )
+
     updated_task = task_crud.update(db=db, task_id=task_id, obj_in=task_update)
     return updated_task
 
